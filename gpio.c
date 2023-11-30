@@ -10,10 +10,6 @@
 #define BCM2708_PERI_BASE        0x20000000
 #define GPIO_BASE                (BCM2708_PERI_BASE + 0x200000) /* GPIO controller */
 
-void gpio_delay(int i) {
-	usleep(i);
-}
-
 #define PAGE_SIZE (4*1024)
 #define BLOCK_SIZE (4*1024)
 
@@ -29,8 +25,6 @@ void gpio_delay(int i) {
 
 #define GPIO_PULL *(g_gpio_map+37) // Pull up/pull down
 #define GPIO_PULLCLK0 *(g_gpio_map+38) // Pull up/pull down clock
-
-static uint8_t pinLut[] = {/*TDO*/9, /*TDI*/10, /*TCK*/11, /*TMS*/25};
 
 volatile uint32_t *g_gpio_map = NULL;
 
@@ -66,23 +60,26 @@ int gpio_initialise(void) {
    return 0;
 }
 
-void gpio_write(int pinx, int state) {
-  uint8_t pin = pinLut[pinx];
+void gpio_kill(void) {
+	munmap((void *)g_gpio_map, 0xb4);
+}
+
+// pico layer stuff
+
+void gpio_init(int pin) {
+	INP_GPIO(pin);
+}
+
+void gpio_put(int pin, int state) {
 	if (state) GPIO_SET = 1 << pin;
 	else       GPIO_CLR = 1 << pin;
 }
 
-int gpio_read(int pinx) {
-  uint8_t pin = pinLut[pinx];
-	return GET_GPIO(pin) ? 1 : 0;
-}
-
-void gpio_setup(int pinx, int out) {
-  uint8_t pin = pinLut[pinx];
+void gpio_set_dir(int pin, int state) {
 	INP_GPIO(pin);
-	if (out) OUT_GPIO(pin);
+	if (state == GPIO_OUT) OUT_GPIO(pin);
 }
 
-void gpio_kill(void) {
-	munmap((void *)g_gpio_map, 0xb4);
+int gpio_get(int pin) {
+	return GET_GPIO(pin) ? 1 : 0;
 }

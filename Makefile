@@ -1,5 +1,5 @@
 CC=gcc
-objs=main.o gpio.o fpga.o fpgasupp.o bitfile.o
+objs=main.o gpio.o fpga.o bitfile.o
 
 %.o : %.c
 	$(CC) -c -o$@ $<

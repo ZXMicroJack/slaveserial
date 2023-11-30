@@ -10,9 +10,9 @@ void fpga_configure_start();
 void fpga_configure_data(uint8_t *data, uint32_t len);
 void fpga_configure_end();
 
-void fpga_load_bitfile(void *_spi, int lba, char *fn);
+void fpga_load_bitfile(char *fn);
 void fpga_boot_from_flash();
-int fpga_detect_error();
-void fpga_detect_init();
+// int fpga_detect_error();
+// void fpga_detect_init();
 
 #endif
