@@ -1,4 +1,5 @@
-CC=gcc
+#CC=gcc
+CC=/pitools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/arm-linux-gnueabihf-gcc
 objs=main.o gpio.o fpga.o bitfile.o
 
 %.o : %.c
@@ -7,13 +8,13 @@ objs=main.o gpio.o fpga.o bitfile.o
 %.d : %.c
 	$(CC) -M -o$@ $<
 
-default: main
+default: fpga
 
 include $(objs:.o=.d)
 
 
 
-main: $(objs)
+fpga: $(objs)
 	$(CC) -o$@ $(objs)
 
 clean:

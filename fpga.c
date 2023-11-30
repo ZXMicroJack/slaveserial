@@ -110,6 +110,7 @@ static uint32_t crc32(uint32_t crc, uint8_t *blk, uint32_t len) {
 }
 
 void fpga_clock_byte(uint8_t data, int first) {
+  int i;
   if (first) {
     gpio_put(GPIO_FPGA_FMISO, data >> 7);
     usleep(1);
@@ -117,7 +118,7 @@ void fpga_clock_byte(uint8_t data, int first) {
     usleep(1);
     data <<= 1;
 
-    for (int i=1; i<8; i++) {
+    for (i=1; i<8; i++) {
       gpio_put(GPIO_FPGA_FMISO, data >> 7);
       usleep(1);
       gpio_put(GPIO_FPGA_FCLK, 0);
@@ -126,7 +127,7 @@ void fpga_clock_byte(uint8_t data, int first) {
       data <<= 1;
     }
   } else {
-    for (int i=0; i<8; i++) {
+    for (i=0; i<8; i++) {
       gpio_put(GPIO_FPGA_FMISO, data >> 7);
       usleep(1);
       gpio_put(GPIO_FPGA_FCLK, 0);
@@ -142,7 +143,7 @@ int fpga_configure(void *user_data, uint8_t (*next_block)(void *, uint8_t *), ui
   uint32_t data;
   uint32_t len;
   uint32_t thislen;
-  int j;
+  int i, j;
 
   initCRC();
   uint32_t crc = 0xffffffff;
@@ -170,7 +171,7 @@ int fpga_configure(void *user_data, uint8_t (*next_block)(void *, uint8_t *), ui
     crc = crc32(crc, bits, thislen);
 
     // clock data out
-    for (int i=0; i<thislen; i++) {
+    for (i=0; i<thislen; i++) {
       fpga_clock_byte(bits[i], firstbyte);
       firstbyte = 0;
     }
