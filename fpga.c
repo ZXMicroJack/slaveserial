@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
-#include <pico/time.h>
+#if 0
+include <pico/time.h>
 
 #include "hardware/clocks.h"
 #include "hardware/structs/clocks.h"
@@ -12,9 +13,9 @@
 #include "pico/bootrom.h"
 
 #include "hardware/pio.h"
-
 #include "pins.h"
 #include "fpga.h"
+
 #include "bitfile.h"
 // #define DEBUG
 #include "debug.h"
@@ -183,3 +184,4 @@ int fpga_configure(void *user_data, uint8_t (*next_block)(void *, uint8_t *), ui
   return 0;
 }
 
+#endif

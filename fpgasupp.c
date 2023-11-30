@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdint.h>
+#if 0
 #include <pico/time.h>
 
 #include "hardware/clocks.h"
@@ -18,10 +19,10 @@
 #include "bitfile.h"
 #define DEBUG
 #include "debug.h"
-#include "fat32.h"
+// #include "fat32.h"
 
-#include "fpga.pio.h"
-#include "pio_spi.h"
+// #include "fpga.pio.h"
+// #include "pio_spi.h"
 
 
 void fpga_boot_from_flash() {
@@ -200,3 +201,4 @@ int fpga_detect_error() {
 #endif
   return boot_recover;
 }
+#endif
